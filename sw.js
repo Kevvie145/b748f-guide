@@ -1,5 +1,5 @@
 /* 747-8F Tech Guide service worker. Cache name changes with every build, so a new build replaces the old copy. */
-const VERSION = "e5dc3c7640";
+const VERSION = "84ca48fae7";
 const SHELL = "b748-shell-" + VERSION;
 const FONTS = "b748-fonts-v1";
 const ASSETS = ["./", "index.html", "manifest.webmanifest", "icons/apple-touch-icon.png", "icons/icon-192.png", "icons/icon-512.png"];

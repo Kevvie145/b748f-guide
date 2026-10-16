@@ -20,7 +20,7 @@ TITLE = "747-8F Tech Guide"
 def read(p): return pathlib.Path(p).read_text(encoding="utf-8")
 
 def scripts(pwa):
-    files = [CONTENT / "library.js"] + sorted(CONTENT.glob("ch[0-9][0-9].js")) + [SRC / "widgets.js", SRC / "app.js"]
+    files = [CONTENT / "library.js"] + sorted(CONTENT.glob("ch[0-9][0-9].js")) + [SRC / "panelkit.js", SRC / "gl3d.js", SRC / "widgets.js", SRC / "app.js"]
     out = []
     for f in files:
         if f.name == "app.js" and pwa:

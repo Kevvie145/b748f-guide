@@ -20,7 +20,7 @@
     <filter id="pk-glow" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="3.2"/></filter>
     <filter id="pk-txtglow" x="-.3" y="-.6" width="1.6" height="2.2"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>`;
-  K.svg = (w, h, inner, label) => `<svg class="pk" viewBox="0 0 ${w} ${h}" role="group" aria-label="${esc(label || "panel")}">${K.defs()}${inner}</svg>`;
+  K.svg = (w, h, inner, label) => `<svg class="pk" viewBox="0 0 ${w} ${h}" style="--w:${w}" role="group" aria-label="${esc(label || "panel")}">${K.defs()}${inner}</svg>`;
   const screw = (x, y) => `<g transform="translate(${x},${y})"><circle r="3.4" fill="url(#pk-metal)" stroke="#5c4330" stroke-width=".6"/><path d="M-2.2,0 H2.2" stroke="#3d2c1f" stroke-width=".9"/></g>`;
   K.tan = (x, y, w, h, scr = true) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="url(#pk-tan)" stroke="#7a5638" stroke-width="2"/>` + (scr ? screw(x + 8, y + 8) + screw(x + w - 8, y + 8) + screw(x + 8, y + h - 8) + screw(x + w - 8, y + h - 8) : "");
   K.grey = (x, y, w, h, scr = true) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="url(#pk-grey)" stroke="#8e9499" stroke-width="2"/>` + (scr ? [[8, 8], [w - 8, 8], [8, h - 8], [w - 8, h - 8]].map(([a, b]) => `<g transform="translate(${x + a},${y + b})"><circle r="3.2" fill="url(#pk-metal)" stroke="#6e757a" stroke-width=".6"/><path d="M-2,0 H2" stroke="#454b50" stroke-width=".8"/></g>`).join("") : "");
@@ -40,7 +40,7 @@
       return `${d < 0 ? knob : ""}<rect x="-23" y="-8" width="46" height="16" rx="8" fill="#8a9095" stroke="#3b4044" stroke-width="1"/>${[-13, 0, 13].map((x) => `<circle cx="${x}" cy="0" r="4.6" fill="url(#pk-knob)" stroke="#4a5055" stroke-width=".7"/>`).join("")}${d > 0 ? knob : ""}`;
     }
     if (type === "paddle" || type === "logo") {
-      const W = type === "logo" ? 13 : 8.5, L = type === "logo" ? 25 : 19;
+      const W = type === "logo" ? 12 : 8.5, L = type === "logo" ? 20 : 18;
       if (d === 0) return `<rect x="${-W}" y="-4" width="${2 * W}" height="8" rx="2" fill="url(#pk-paddle)" stroke="#6e6450"/>`;
       return `<g transform="scale(1,${d})"><path d="M-4,1 L4,1 L${W},${-L} L${-W},${-L} Z" fill="url(#pk-paddle)" stroke="#6e6450" stroke-width=".8"/>
         <path d="M${-W},${-L} L${W},${-L} L${W - 1.5},${-L - 4.5} L${-W + 1.5},${-L - 4.5} Z" fill="#faf5ea" stroke="#6e6450" stroke-width=".8"/>
@@ -123,11 +123,11 @@
   };
 
   /* ── rotary selector ── */
-  K.rot = (id, x, y, opts, aria, big) => {
-    const r = big ? 15 : 12;
+  K.rot = (id, x, y, opts, aria, big, lr) => {
+    const r = big ? 15 : 12, L = lr || r + 15;
     return `<g class="pk-rot" data-rot="${id}" transform="translate(${x},${y})" tabindex="0" role="button" aria-label="${esc(aria || id)}">
       ${opts.map((o) => { const a = ((o.a - 90) * Math.PI) / 180; return `<path d="M${Math.cos(a) * (r + 3)},${Math.sin(a) * (r + 3)} L${Math.cos(a) * (r + 6)},${Math.sin(a) * (r + 6)}" stroke="#efe8dc" stroke-width="1.2"/>
-        <text class="pk-t" data-rv="${o.v}" x="${Math.cos(a) * (r + 15)}" y="${Math.sin(a) * (r + 15) + 3.5}" text-anchor="middle" font-size="${o.fs || 9.5}">${esc(o.l)}</text>`; }).join("")}
+        <text class="pk-t" data-rv="${o.v}" x="${Math.cos(a) * L}" y="${Math.sin(a) * L + 3.5}" text-anchor="middle" font-size="${o.fs || 9.5}">${esc(o.l)}</text>`; }).join("")}
       <circle r="${r + 1.5}" fill="#3a3f43"/><circle r="${r}" fill="url(#pk-cream)" stroke="#6b5f48" stroke-width=".8"/>
       <g data-ptr><rect x="-3.4" y="${-r - 2}" width="6.8" height="${2 * r + 4}" rx="3" fill="url(#pk-paddle)" stroke="#6e6450" stroke-width=".8"/><path d="M0,${-r - 1} L0,${-r + 6}" stroke="#2b2f33" stroke-width="1.6"/></g>
       <circle class="hit" r="${r + 4}"/></g>`;
